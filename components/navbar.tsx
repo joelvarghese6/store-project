@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useCartStore } from "@/lib/cart-store";
 import { CartSheet } from "./cart-sheet";
+import Image from "next/image";
 
 type NavbarProps = {
     storeName?: string
@@ -38,7 +39,7 @@ export const Navbar = ({ storeName = "ShopEase" }: NavbarProps) => {
             <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4 sm:px-6 lg:px-8">
                 <div className="flex items-center gap-3">
                     <Link href={"/"}>
-                        StoreName
+                        <Image src="/logo.png" height={250} width={250} alt="logo" className="h-50 w-auto"/>
                     </Link>
                 </div>
 

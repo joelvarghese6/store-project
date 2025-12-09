@@ -10,7 +10,7 @@ const font = Urbanist({
 });
 
 export const metadata: Metadata = {
-  title: "Store",
+  title: "FirstStore Clothing",
   description: "This is a store",
 };
 
