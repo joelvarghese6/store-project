@@ -1,5 +1,9 @@
+"use client";
 
 import Image from "next/image";
+import { Plus, Minus } from "lucide-react";
+import { useCartStore } from "@/lib/cart-store";
+import { Button } from "@/components/ui/button";
 
 type ProductListItemProps = {
   product: {
@@ -41,6 +45,26 @@ const BagIcon = () => (
 
 export const ProductListItem = ({ product }: ProductListItemProps) => {
   const filledStars = Math.max(0, Math.min(5, Math.round(product.rating)));
+  const quantity = useCartStore((state) => state.getItemQuantity(product.id));
+  const addItem = useCartStore((state) => state.addItem);
+  const updateQuantity = useCartStore((state) => state.updateQuantity);
+
+  const handleAddToCart = () => {
+    addItem({
+      id: product.id,
+      name: product.name,
+      price: product.price,
+      image: product.image,
+    });
+  };
+
+  const handleIncrement = () => {
+    updateQuantity(product.id, quantity + 1);
+  };
+
+  const handleDecrement = () => {
+    updateQuantity(product.id, quantity - 1);
+  };
 
   return (
     <article className="flex flex-col gap-2 text-sm text-neutral-800">
@@ -72,12 +96,43 @@ export const ProductListItem = ({ product }: ProductListItemProps) => {
         ₹{product.price.toFixed(2)}
       </div>
 
-      <div className="flex items-center gap-2 text-sm font-medium text-black">
-        <BagIcon />
-        <span className="underline decoration-black underline-offset-4 transition-colors hover:decoration-rose-400 cursor-pointer">
-          Add to cart
-        </span>
-      </div>
+      {quantity === 0 ? (
+        <div className="flex items-center gap-2 text-sm font-medium text-black">
+          <BagIcon />
+          <span
+            className="underline decoration-black underline-offset-4 transition-colors hover:decoration-rose-400 cursor-pointer"
+            onClick={handleAddToCart}
+          >
+            Add to cart
+          </span>
+        </div>
+      ) : (
+        <div className="flex items-center gap-3">
+          <Button
+            type="button"
+            variant="outline"
+            size="sm"
+            onClick={handleDecrement}
+            className="h-8 w-8 rounded-full p-0"
+            aria-label="Decrease quantity"
+          >
+            <Minus className="h-4 w-4" />
+          </Button>
+          <span className="text-sm font-medium text-black min-w-8 text-center">
+            {quantity}
+          </span>
+          <Button
+            type="button"
+            variant="outline"
+            size="sm"
+            onClick={handleIncrement}
+            className="h-8 w-8 rounded-full p-0"
+            aria-label="Increase quantity"
+          >
+            <Plus className="h-4 w-4" />
+          </Button>
+        </div>
+      )}
     </article>
   );
 };

@@ -3,6 +3,7 @@ import { Urbanist } from "next/font/google";
 import "./globals.css";
 import { Footer } from "@/components/footer";
 import { Navbar } from "@/components/navbar";
+import { NuqsAdapter } from "nuqs/adapters/next/app";
 
 const font = Urbanist({
   subsets: ["latin"],
@@ -23,9 +24,11 @@ export default function RootLayout({
       <body
         className={font.className}
       >
-        <Navbar />
-        {children}
-        <Footer />
+        <NuqsAdapter>
+          <Navbar />
+          {children}
+          <Footer />
+        </NuqsAdapter>
       </body>
     </html>
   );
