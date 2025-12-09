@@ -1,4 +1,4 @@
-# Product Dashboard -- UI Developer Assignment
+# Ecommerce Assignment
 
 A responsive product dashboard built using Next.js, React, and Tailwind
 CSS, featuring product listing, sorting, filtering, searching, and cart
