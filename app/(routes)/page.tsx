@@ -4,7 +4,7 @@ import ProductList from "@/features/home/components/product-list";
 
 export default function Home() {
   return (
-    <div className="space-y-10 pb-10">
+    <div className="space-y-10 pb-10 pt-16">
       <Billboard />
       <section className="p-4 sm:p-6 lg:p-8">
         <div className="mx-auto max-w-6xl space-y-6">

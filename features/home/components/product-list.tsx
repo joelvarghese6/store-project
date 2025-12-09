@@ -1,11 +1,20 @@
 
 "use client";
 
+import { useQueryState } from "nuqs";
 import { useGetProducts } from "../hooks/use-get-products";
 import { ProductListItem } from "./product-list-item";
 
 export const ProductList = () => {
-  const { products, isLoading } = useGetProducts();
+  const [search] = useQueryState('search');
+  const [sort] = useQueryState('sort', { defaultValue: 'rating-desc' });
+  const [category] = useQueryState('category');
+
+  const { products, isLoading } = useGetProducts({
+    search,
+    sort,
+    category,
+  });
 
   if (isLoading) {
     return (
@@ -18,6 +27,16 @@ export const ProductList = () => {
             Loading products...
           </div>
         ))}
+      </div>
+    );
+  }
+
+  if (products.length === 0) {
+    return (
+      <div className="flex items-center justify-center py-12">
+        <p className="text-center text-base text-neutral-600">
+          No results to show
+        </p>
       </div>
     );
   }

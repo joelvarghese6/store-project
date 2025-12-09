@@ -11,14 +11,20 @@ type Product = {
     image: string;
 };
 
+type FilterParams = {
+    search?: string | null;
+    sort?: string | null;
+    category?: string | null;
+};
+
 /**
- * Returns a static list of products with a short artificial loading delay.
- * Usage: const { products, isLoading } = useGetProducts();
+ * Returns a filtered and sorted list of products with a short artificial loading delay.
+ * Usage: const { products, isLoading } = useGetProducts({ search, sort, category });
  */
-export const useGetProducts = () => {
+export const useGetProducts = (filters: FilterParams = {}) => {
     const [isLoading, setIsLoading] = useState(true);
 
-    const products = useMemo<Product[]>(
+    const allProducts = useMemo<Product[]>(
         () => [
             {
                 id: "p1",
@@ -104,11 +110,63 @@ export const useGetProducts = () => {
         []
     );
 
+    // Map category ID to category name (category IDs are lowercase, product categories are capitalized)
+    const categoryIdToName: Record<string, string> = {
+        shirts: "Shirts",
+        shoes: "Shoes",
+        pants: "Pants",
+    };
+
+    const filteredAndSortedProducts = useMemo(() => {
+        let result = [...allProducts];
+
+        // Filter by search
+        if (filters.search) {
+            const searchLower = filters.search.toLowerCase();
+            result = result.filter(
+                (product) =>
+                    product.name.toLowerCase().includes(searchLower) ||
+                    product.category.toLowerCase().includes(searchLower)
+            );
+        }
+
+        // Filter by category
+        if (filters.category) {
+            const categoryName = categoryIdToName[filters.category];
+            if (categoryName) {
+                result = result.filter((product) => product.category === categoryName);
+            }
+        }
+
+        // Sort products
+        if (filters.sort) {
+            switch (filters.sort) {
+                case "price-asc":
+                    result.sort((a, b) => a.price - b.price);
+                    break;
+                case "price-desc":
+                    result.sort((a, b) => b.price - a.price);
+                    break;
+                case "rating-desc":
+                    result.sort((a, b) => b.rating - a.rating);
+                    break;
+                default:
+                    // Default to rating-desc
+                    result.sort((a, b) => b.rating - a.rating);
+            }
+        } else {
+            // Default sort: rating-desc
+            result.sort((a, b) => b.rating - a.rating);
+        }
+
+        return result;
+    }, [allProducts, filters.search, filters.sort, filters.category]);
+
     useEffect(() => {
         const timer = setTimeout(() => setIsLoading(false), 400);
         return () => clearTimeout(timer);
     }, []);
 
-    return { products, isLoading };
+    return { products: filteredAndSortedProducts, isLoading };
 };
 

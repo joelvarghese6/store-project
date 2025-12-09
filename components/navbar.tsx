@@ -1,15 +1,40 @@
-import Link from "next/link"
+"use client";
+
+import Link from "next/link";
+import { useEffect, useState } from "react";
+import { useCartStore } from "@/lib/cart-store";
+import { CartSheet } from "./cart-sheet";
 
 type NavbarProps = {
     storeName?: string
-    cartCount?: number
 }
 
-export const Navbar = ({ storeName = "ShopEase", cartCount = 0 }: NavbarProps) => {
-    const safeCartCount = Number.isFinite(cartCount) && cartCount > 0 ? cartCount : 0
+export const Navbar = ({ storeName = "ShopEase" }: NavbarProps) => {
+    const [mounted, setMounted] = useState(false);
+    const [cartOpen, setCartOpen] = useState(false);
+    const totalItems = useCartStore((state) => state.getTotalItems());
+    const safeCartCount = mounted && totalItems > 0 ? totalItems : 0;
+    const [isScrolled, setIsScrolled] = useState(false);
+
+    useEffect(() => {
+        setMounted(true);
+    }, []);
+
+    useEffect(() => {
+        const handleScroll = () => {
+            setIsScrolled(window.scrollY > 0);
+        };
+
+        window.addEventListener("scroll", handleScroll);
+        return () => window.removeEventListener("scroll", handleScroll);
+    }, []);
 
     return (
-        <header className="border-b bg-white">
+        <header className={`fixed top-0 left-0 right-0 z-50 border-b transition-all duration-300 ${
+            isScrolled 
+                ? "bg-white/60 backdrop-blur-md shadow-sm" 
+                : "bg-white"
+        }`}>
             <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4 sm:px-6 lg:px-8">
                 <div className="flex items-center gap-3">
                     <Link href={"/"}>
@@ -19,6 +44,7 @@ export const Navbar = ({ storeName = "ShopEase", cartCount = 0 }: NavbarProps) =
 
                 <button
                     type="button"
+                    onClick={() => setCartOpen(true)}
                     className="relative flex items-center gap-2 rounded-full px-3 py-2 text-gray-700 transition hover:bg-gray-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:ring-offset-2"
                     aria-label={`Cart with ${safeCartCount} item${safeCartCount === 1 ? "" : "s"}`}
                 >
@@ -50,6 +76,7 @@ export const Navbar = ({ storeName = "ShopEase", cartCount = 0 }: NavbarProps) =
                     )}
                 </button>
             </div>
+            <CartSheet open={cartOpen} onOpenChange={setCartOpen} />
         </header>
     )
 }
