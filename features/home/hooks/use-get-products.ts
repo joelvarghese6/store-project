@@ -71,7 +71,7 @@ export const useGetProducts = (filters: FilterParams = {}) => {
                 name: "Leather Boots",
                 category: "Shoes",
                 rating: 4.8,
-                price: 129.99,
+                price: 1299.99,
                 image: "https://images.unsplash.com/photo-1523381210434-271e8be1f52b?auto=format&fit=crop&w=400&q=80",
             },
             {
@@ -79,7 +79,7 @@ export const useGetProducts = (filters: FilterParams = {}) => {
                 name: "Graphic Tee",
                 category: "Shirts",
                 rating: 4.2,
-                price: 24.99,
+                price: 249.99,
                 image: "https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?auto=format&fit=crop&w=400&q=80",
             },
             {
@@ -87,7 +87,7 @@ export const useGetProducts = (filters: FilterParams = {}) => {
                 name: "Jogger Pants",
                 category: "Pants",
                 rating: 4.1,
-                price: 49.99,
+                price: 499.99,
                 image: "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&w=400&q=80",
             },
             {
@@ -95,7 +95,7 @@ export const useGetProducts = (filters: FilterParams = {}) => {
                 name: "Canvas Slip-Ons",
                 category: "Shoes",
                 rating: 4.0,
-                price: 39.99,
+                price: 399.99,
                 image: "https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=400&q=80",
             },
             {
@@ -103,7 +103,7 @@ export const useGetProducts = (filters: FilterParams = {}) => {
                 name: "Linen Shirt",
                 category: "Shirts",
                 rating: 4.5,
-                price: 42.99,
+                price: 429.99,
                 image: "https://images.unsplash.com/photo-1523381210434-271e8be1f52b?auto=format&fit=crop&w=400&q=80",
             },
         ],
